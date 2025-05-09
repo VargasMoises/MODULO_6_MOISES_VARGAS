@@ -65,21 +65,27 @@ INSERT INTO Book_Author (Book_ID, Author_ID) VALUES
 
 -- SOLTION TO TASK 4
 -- 1.1
-SELECT * FROM Book
+SELECT Title FROM Book
 WHERE Publisher_ID= 1;
 --1.2
 SELECT * FROM Book
 WHERE Publication_Year > 1950;
 --1.3
-SELECT * FROM Book
-WHERE Genre= 'Fantasy'
+SELECT Name FROM Author
+WHERE Author_ID IN (
+	SELECT Author_ID FROM Book_Author
+	WHERE Book_ID IN (
+		SELECT Book_ID FROM Book
+		WHERE Genre= 'Fantasy'
+))
 --1.4
-SELECT * FROM Author
-WHERE Name LIKE 'J.K.%'; --R= ID 4
-SELECT * FROM Book_Author
-WHERE Author_ID = 4; --R= Book_ID 4
-SELECT * FROM Book
-WHERE Book_ID = 4; --R= Harry Potter and the Philosopher Stone
+SELECT Title FROM Book
+WHERE Book_ID =(
+	SELECT Book_ID FROM Book_Author
+    WHERE Author_ID = (
+        SELECT Author_ID FROM Author
+        WHERE Name LIKE 'J.K.%'
+))
 
 --2.1
 UPDATE Book
